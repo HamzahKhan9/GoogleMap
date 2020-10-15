@@ -50,32 +50,25 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     ArrayList<LatLng> coordList = new ArrayList<LatLng>();
     ArrayList<String> locationLabels = new ArrayList<String>();
 
-   /* LatLng sydney = new LatLng(-34,151);
-    LatLng TamWorth = new LatLng(-31.083332,150.916672);
-    LatLng NewCastle = new LatLng(-32.916668,151.750000);
-    LatLng Brisbane = new LatLng(-27,153.021072);
-    LatLng Dubbo = new LatLng(-32.256943,148.601105);
-*/
+
     OkHttpClient client = new OkHttpClient();
     String url = "https://myscrap.com/api/msDiscoverPage";
 
     SupportMapFragment mapFragment;
     SearchView searchView;
-   // FusedLocationProviderClient client;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*arrayList.add(sydney);
-        arrayList.add(TamWorth);
-        arrayList.add(NewCastle);
-        arrayList.add(Brisbane);
-        arrayList.add(Dubbo);*/
 
         searchView = findViewById(R.id.sv_location);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map);
+
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -95,16 +88,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         map = googleMap;
-
-        for (int i = 0 ; i< coordList.size(); i++)
-        {
-            map.addMarker(new MarkerOptions().position(coordList.get(i)).title("Marker"));
-            map.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-            map.moveCamera(CameraUpdateFactory.newLatLng(coordList.get(i)));
-        }
-
+        fetchData("Ohad");
     }
 
     public void  readJson  (String json_string)
@@ -124,8 +109,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void  showMarkers() {
+        map.clear();
         for (int i = 0; i < coordList.size(); i++) {
             map.addMarker(new MarkerOptions().position(coordList.get(i)).title(locationLabels.get(i)));
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordList.get(i), 12.0f));
         }
     }
 
